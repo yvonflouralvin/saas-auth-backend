@@ -21,4 +21,4 @@ RUN mkdir -p /app/static
 EXPOSE 8000
 # Commande par défaut
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-# CMD ["gunicorn", "auth_service.wsgi:application ", "--bind", "0.0.0.0:8000", "--workers", "3"]
+# CMD ["gunicorn", "auth_service.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
