@@ -1,5 +1,5 @@
 trigger:
-- build
+- main
 
 variables:
   REGISTRY: saasdrc.azurecr.io
