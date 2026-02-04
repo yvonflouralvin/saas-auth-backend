@@ -1,19 +1,41 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - develop
 
+variables:
+  REGISTRY: saasdrc.azurecr.io
+  IMAGE_NAME: saas-auth
+  TAG: 1.0.1
+  # Set this to the name of the Azure service connection that has access to your ACR
+  # ACR_CONNECTION: saasdrc-acr-connection
+
 pool:
-  vmImage: ubuntu-latest
+  name: eShopOnWebSelfPool
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+- stage: BuildAndPush
+  displayName: Build and push Docker image
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - checkout: self
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    - task: Docker@2
+      displayName: Build and push image to ACR
+      inputs:
+        command: buildAndPush
+        #containerRegistry: $(ACR_CONNECTION)
+        repository: $(IMAGE_NAME)
+        dockerfile: Dockerfile
+        tags: |
+          $(TAG)
+          latest
+
+    - script: |
+        echo "Image pushed: $(REGISTRY)/$(IMAGE_NAME):$(TAG)"
+      displayName: 'Echo pushed image'
+
+# Notes:
+# - Create an Azure Container Registry service connection in Azure DevOps and set its name in the ACR_CONNECTION variable.
+# - The Docker@2 task will use that service connection to authenticate and push the image to the registry configured in the service connection.
+# - If you prefer to login with `az acr login` instead, I can provide an alternative using AzureCLI@2.
