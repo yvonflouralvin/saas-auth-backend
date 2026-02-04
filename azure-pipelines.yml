@@ -3,7 +3,7 @@ trigger:
 
 variables:
   REGISTRY: saasdrc.azurecr.io
-  IMAGE_NAME: saas-auth-backend
+  IMAGE_NAME: auth-backend
   TAG: 1.0.1
 
 pool:
@@ -15,13 +15,13 @@ steps:
 # 🔹 Build Docker Image
 - script: |
     docker build \
-      -t $(REGISTRY)/chai/$(IMAGE_NAME):$(TAG) \
-      -t $(REGISTRY)/chai/$(IMAGE_NAME):latest \
+      -t $(REGISTRY)/saas-workspace/$(IMAGE_NAME):$(TAG) \
+      -t $(REGISTRY)/saas-workspace/$(IMAGE_NAME):latest \
       .
   displayName: 'Docker Build'
 
 # 🔹 Push Docker Image
 - script: |
-    docker push $(REGISTRY)/chai/$(IMAGE_NAME):$(TAG)
-    docker push $(REGISTRY)/chai/$(IMAGE_NAME):latest
+    docker push $(REGISTRY)/saas-workspace/$(IMAGE_NAME):$(TAG)
+    docker push $(REGISTRY)/saas-workspace/$(IMAGE_NAME):latest
   displayName: 'Docker Push'
